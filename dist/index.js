@@ -2245,7 +2245,7 @@ module.exports = opts => {
 const core = __webpack_require__(310);
 const github = __webpack_require__(559);
 
-async function fetchCommitID(owner, repoName, pullNumber) {
+async function fetchCommitID(gql, owner, repoName, pullNumber) {
   const { commitID } = await gql(
     `{
         repository(owner: ${owner}, name: ${repoName}) {
@@ -2284,7 +2284,7 @@ try {
       console.log(`comment id ${payload.comment.id}`);
       const pullNumber = payload.issue.number;
       // Find most recent commit id
-      const commitID = fetchCommitID(owner, repoName, pullNumber);
+      const commitID = fetchCommitID(gql, owner, repoName, pullNumber);
       console.log(commitID);
     }
   }
