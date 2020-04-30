@@ -25,11 +25,8 @@ try {
   const repoToken = core.getInput("repoToken");
   const eventName = core.getInput("eventName");
 
-  const gql = octokit.graphql.defaults({
-    headers: {
-      authorization: `token ${repoToken}`,
-    },
-  });
+  const octokit = new github.GitHub(repoToken);
+  const gql = octokit.graphql;
 
   const payload = github.context.payload;
 
