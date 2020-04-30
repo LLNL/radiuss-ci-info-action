@@ -34,11 +34,11 @@ try {
 
   const owner = payload.repository.owner.login;
   const repoName = payload.repository.name;
-  const pullNumber = payload.issue.number;
 
   if (eventName === "issue_comment") {
     if (payload.comment.body === "LGTM") {
       console.log(`comment id ${payload.comment.id}`);
+      const pullNumber = payload.issue.number;
       // Find most recent commit id
       const commitID = fetchCommitID(owner, repoName, pullNumber);
       console.log(commitID);
