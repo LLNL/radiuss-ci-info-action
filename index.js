@@ -8,7 +8,7 @@ try {
   const payload = github.context.payload;
 
   console.log(`### Event: ${eventName}`);
-  console.log(`### The event payload: `):
+  console.log(`### The event payload: `);
   console.log(`${JSON.stringify(payload)}`);
 
   const owner = payload.repository.owner.login;
@@ -22,11 +22,11 @@ try {
   }
 
   if (eventName === "status") {
-    console.log(`--> New status for commit (ID): ${payload.commit.id}`);
+    console.log(`--> New status for commit (SHA): ${payload.sha}`);
   }
 
-  if (eventName === "commit") {
-    console.log(`--> New commit (ID): ${payload.commit.id}`);
+  if (eventName === "push") {
+    console.log(`--> New commit (SHA): ${payload.head}`);
   }
 
 } catch (error) {
