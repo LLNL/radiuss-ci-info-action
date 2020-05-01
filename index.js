@@ -26,7 +26,7 @@ try {
   }
 
   if (eventName === "push") {
-    console.log(`--> New commit (SHA): ${payload.head}`);
+    console.log(`--> New commit (SHA): ${payload.after}`);
   }
 
 } catch (error) {
