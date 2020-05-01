@@ -19944,55 +19944,34 @@ module.exports = require("events");
 const core = __webpack_require__(827);
 const github = __webpack_require__(148);
 
-async function fetchCommitID(gql, owner, repoName, pullNumber) {
-  const { commitID } = await gql(
-    `{
-        repository(owner: ${owner}, name: ${repoName}) {
-          pullRequest(number: ${pullNumber}) {
-            commits(last: 1) {
-              nodes {
-                commit {
-                  id
-               }
-             }
-           }
-         }
-      }
-    }`
-  );
-
-  return commitID;
-}
-
 try {
   const repoToken = core.getInput("repoToken");
   const eventName = core.getInput("eventName");
 
-  const octokit = new github.GitHub(repoToken);
-  const gql = octokit.graphql;
-
   const payload = github.context.payload;
 
-  console.log(`Event: ${eventName}`);
+  console.log(`### Event: ${eventName}`);
+  console.log(`### The event payload: `);
+  console.log(`${JSON.stringify(payload)}`);
 
   const owner = payload.repository.owner.login;
   const repoName = payload.repository.name;
 
   if (eventName === "issue_comment") {
     if (payload.comment.body === "LGTM") {
-      console.log(`comment id ${payload.comment.id}`);
+      console.log(`--> New comment (ID): ${payload.comment.id}`);
       const pullNumber = payload.issue.number;
-      // Find most recent commit id
-      const commitID = fetchCommitID(gql, owner, repoName, pullNumber);
-      console.log(commitID);
     }
   }
 
   if (eventName === "status") {
-    console.log(`commit id ${payload.comment.id}`);
+    console.log(`--> New status for commit (SHA): ${payload.sha}`);
   }
 
-  console.log(`The event payload: ${JSON.stringify(payload)}`);
+  if (eventName === "push") {
+    console.log(`--> New commit (SHA): ${payload.head}`);
+  }
+
 } catch (error) {
   core.setFailed(error.message);
 }
